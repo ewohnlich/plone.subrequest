@@ -85,6 +85,9 @@ def subrequest(url, root=None, stdout=None, exception_handler=None):
     assert parent_request is not None, \
         'Unable to get request, perhaps zope.globalrequest is not configured.'
     parent_site = getSite()
+    _, _, parent_path, _, _ = urlsplit(parent_site.absolute_url())
+    if parent_path and path.startswith(parent_path):
+        path = path[len(parent_path):]
     security_manager = getSecurityManager()
     parent_app = parent_request.PARENTS[-1]
     if path.startswith('/'):
